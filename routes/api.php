@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SubmissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/', [SubmissionController::class, 'index'])->name('index');
+Route::post('/submit', [SubmissionController::class, 'store'])->name('submit');
+Route::get('/show/{submission}', [SubmissionController::class, 'show'])->name('show');
