@@ -26,6 +26,11 @@ class SubmissionController extends Controller
             'message' => 'required',
         ]);
         Submission::create($validated);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'submission stored',
+            'data' => $validated,
+        ]);
     }
 
     /**
@@ -39,16 +44,30 @@ class SubmissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Submission $submission)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required',
+        ]);
+        $submission->update($validated);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'submission updated',
+            'data' => $validated,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Submission $submission)
     {
-        //
+        $submission->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'submission deleted',
+        ]);
     }
 }

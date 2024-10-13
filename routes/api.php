@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/', [SubmissionController::class, 'index'])->name('index');
 Route::post('/submit', [SubmissionController::class, 'store'])->name('submit');
 Route::get('/show/{submission}', [SubmissionController::class, 'show'])->name('show');
+Route::put('/update/{submission}', [SubmissionController::class, 'update'])->name('update');
+Route::delete('/delete/{submission}', [SubmissionController::class, 'destroy'])->name('delete');
