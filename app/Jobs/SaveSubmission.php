@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Submission;
+use App\Events\SubmissionSaved;
 
 class SaveSubmission implements ShouldQueue
 {
@@ -29,5 +30,6 @@ class SaveSubmission implements ShouldQueue
     public function handle(): void
     {
         Submission::create($this->data);
+        event(new SubmissionSaved($this->data));
     }
 }
