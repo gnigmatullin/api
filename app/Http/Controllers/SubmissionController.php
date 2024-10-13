@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Submission;
+use App\Jobs\SaveSubmission;
 
 class SubmissionController extends Controller
 {
@@ -25,10 +26,10 @@ class SubmissionController extends Controller
             'email' => 'required|email',
             'message' => 'required',
         ]);
-        Submission::create($validated);
+        SaveSubmission::dispatch($validated);
         return response()->json([
             'status' => 'success',
-            'message' => 'submission stored',
+            'message' => 'save submission job added to queue',
             'data' => $validated,
         ]);
     }
