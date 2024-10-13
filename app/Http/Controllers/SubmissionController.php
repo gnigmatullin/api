@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 use App\Models\Submission;
 use App\Jobs\SaveSubmission;
 
@@ -21,16 +23,25 @@ class SubmissionController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'message' => 'required',
         ]);
-        SaveSubmission::dispatch($validated);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'validation errors occurred',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        SaveSubmission::dispatch($validator->validate());
         return response()->json([
             'status' => 'success',
             'message' => 'save submission job added to queue',
-            'data' => $validated,
+            'data' => $validator->validate(),
         ]);
     }
 
@@ -47,16 +58,25 @@ class SubmissionController extends Controller
      */
     public function update(Request $request, Submission $submission)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'message' => 'required',
         ]);
-        $submission->update($validated);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'validation errors occurred',
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $submission->update($validator->validate());
         return response()->json([
             'status' => 'success',
             'message' => 'submission updated',
-            'data' => $validated,
+            'data' => $validator->validate(),
         ]);
     }
 
@@ -65,10 +85,17 @@ class SubmissionController extends Controller
      */
     public function destroy(Submission $submission)
     {
-        $submission->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'submission deleted',
-        ]);
+        if ($submission->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'submission deleted',
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'error on submission delete'
+            ]);
+        }
     }
 }

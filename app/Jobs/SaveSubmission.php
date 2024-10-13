@@ -7,8 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+
 use App\Models\Submission;
 use App\Events\SubmissionSaved;
+
 
 class SaveSubmission implements ShouldQueue
 {
@@ -29,7 +32,12 @@ class SaveSubmission implements ShouldQueue
      */
     public function handle(): void
     {
-        Submission::create($this->data);
-        event(new SubmissionSaved($this->data));
+        $submission = Submission::create($this->data);
+        if ($submission) {
+            event(new SubmissionSaved($this->data));
+        }
+        else {
+            Log::info("Submission save error. Submission data: {$this->data}");
+        }
     }
 }
