@@ -57,8 +57,8 @@ Request example:
 ```bash
 curl -X POST -d "name=Name&email=email@email.com&message=Message" http://api.test/api/submit
 ```
-```json
 Response example:
+```json
 {
 	"status": "success",
 	"message": "save submission job added to queue",
@@ -76,8 +76,8 @@ Request example:
 ```bash
 curl -X POST -d "name=NewName&email=email@email.com&message=NewMessage" http://api.test/api/update/1
 ```
-```json
 Response example:
+```json
 {
 	"status": "success",
 	"message": "submission updated",
