@@ -30,7 +30,7 @@ php artisan migrate
 php artisan serve
 ```
 
-## API Endpoints
+## API endpoints
 1. GET /api
 Return all submissions
 Request example:
@@ -100,3 +100,6 @@ curl -X DELETE http://api.test/api/delete/1
 	"message": "submission deleted"
 }
 ```
+
+## Futher ideas
+1. Add API user authentification
