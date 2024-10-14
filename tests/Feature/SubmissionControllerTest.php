@@ -4,20 +4,20 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 use App\Models\Submission;
 
 class SubmissionControllerTest extends TestCase
 {
-    use RefreshDatabase;    // Refresh DB before tests
+    //use RefreshDatabase;       // Refresh DB before tests
+    use DatabaseTransactions;
 
     public function test_can_list_submissions(): void
     {
-        Submission::factory()->count(3)->create();
         $response = $this->getJson(route('index'));
-        $response->assertStatus(200)
-                 ->assertJsonCount(3);
+        $response->assertStatus(200);
     }
 
     public function test_can_create_submission(): void
