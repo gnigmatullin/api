@@ -42,7 +42,7 @@ class SubmissionController extends Controller
             'status' => 'success',
             'message' => 'save submission job added to queue',
             'data' => $validator->validate(),
-        ]);
+        ], 201);
     }
 
     /**
@@ -69,7 +69,7 @@ class SubmissionController extends Controller
                 'status' => 'error',
                 'message' => 'validation errors occurred',
                 'errors' => $validator->errors()
-            ]);
+            ], 422);
         }
 
         $submission->update($validator->validate());
@@ -89,7 +89,7 @@ class SubmissionController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'submission deleted',
-            ]);
+            ], 204);
         }
         else {
             return response()->json([
